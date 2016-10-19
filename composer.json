@@ -1,7 +1,7 @@
 {
     "name": "ezimuel/zend-expressive-api",
     "description": "Zend Expressive Api talk",
-    "type": "talk",
+    "type": "project",
     "homepage": "https://github.com/ezimuel/zend-expressive-api",
     "license": "BSD-3-Clause",
     "authors": [

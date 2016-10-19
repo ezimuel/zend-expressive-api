@@ -6,6 +6,15 @@ We used the zend-expressive programmatic approach configuration. You can check
 out the [public/index.php](public/index.php) file to see the use of middleware
 pipe.
 
+## Setup
+
+You need to use composer to install the dependencies of this project.
+You can run the following command:
+
+```bash
+$ composer install
+```
+
 ## Status
 
 The status of this project is work-in-progress, please consider this if you want
@@ -114,7 +123,7 @@ Here we reported some example of usage using HTTPie client:
 Request:
 
 ```bash
-http GET http://localhost:8080/api/user
+$ http GET http://localhost:8080/api/user
 ```
 
 Response:
@@ -149,7 +158,7 @@ Host: localhost:8080
 Request:
 
 ```bash
-http POST http://localhost:8080/api/user name=Baz email=baz@host.com password=test --json
+$ http POST http://localhost:8080/api/user name=Baz email=baz@host.com password=test --json
 ```
 
 Response:
@@ -172,7 +181,7 @@ algorithm.
 Request:
 
 ```bash
-http PATCH http://localhost:8080/api/user/3 name=Enrico --json
+$ http PATCH http://localhost:8080/api/user/3 name=Enrico --json
 ```
 
 Response:
@@ -200,7 +209,7 @@ X-Powered-By: PHP/7.0.4
 Request:
 
 ```bash
-http DELETE http://localhost:8080/api/user/3
+$ http DELETE http://localhost:8080/api/user/3
 ```
 
 Response:
