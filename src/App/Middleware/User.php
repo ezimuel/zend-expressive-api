@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use App\Model\User as UserModel;
 use Zend\Expressive\Helper\UrlHelper;
 
-class User
+class User implements RestGetMiddlewareInterface, RestPostMiddlewareInterface, RestPatchMiddlewareInterface, RestDeleteMiddlewareInterface
 {
     protected $model;
     protected $helper;
