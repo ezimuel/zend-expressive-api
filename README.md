@@ -3,12 +3,12 @@
 This is a skeleton application for building web APIs using [zend-expressive](https://github.com/zendframework/zend-expressive).
 
 We used the zend-expressive programmatic approach configuration. You can check
-out the [public/index.php](public/index.php) file to see the use of middleware
-pipe.
+out the [public/index.php](public/index.php) file to see the usage of middleware
+piping.
 
 ## Setup
 
-You need to use composer to install the dependencies of this project.
+You need to use [composer](https://getcomposer.org/) to install the project.
 You can run the following command:
 
 ```bash
@@ -17,8 +17,8 @@ $ composer install
 
 ## Status
 
-The status of this project is work-in-progress, please consider this if you want
-to use it.
+The status of this project is **work-in-progress**, please consider this if you
+want to use it.
 
 ## Usage
 

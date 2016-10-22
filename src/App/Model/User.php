@@ -3,7 +3,6 @@ namespace App\Model;
 
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\TableGateway\TableGateway;
-use Zend\Crypt\Password\Bcrypt;
 
 class User
 {
@@ -12,7 +11,6 @@ class User
     public function __construct(AdapterInterface $adapter)
     {
         $this->table  = new TableGateway('users', $adapter);
-        $this->bcrypt = new Bcrypt();
     }
 
     /**
@@ -46,7 +44,7 @@ class User
     public function addUser(array $data)
     {
         if (isset($data['password'])) {
-            $data['password'] = $this->bcrypt->create($data['password']);
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         }
         $rows = $this->table->insert($data);
         return ($rows === 1) ? $this->table->lastInsertValue : false;

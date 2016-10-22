@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use App\Model\User as UserModel;
 use Zend\Expressive\Helper\UrlHelper;
+use Exception;
 
 class User
 {
@@ -38,7 +39,11 @@ class User
     public function post(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
     {
         $user = $request->getParsedBody();
-        $id   = (int) $this->model->addUser($user);
+        try {
+            $id = (int) $this->model->addUser($user);
+        } catch (Exception $e) {
+            return $response->withStatus(400);
+        }
         $response = $response->withHeader( 'Location', $this->helper->generate('api.user.get', ['id' => $id]));
         return $response->withStatus(201);
     }
@@ -46,7 +51,11 @@ class User
     public function patch(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
     {
         $id = $request->getAttribute('id');
-        $user = $this->model->updateUser($id, $request->getParsedBody());
+        try {
+            $user = $this->model->updateUser($id, $request->getParsedBody());
+        } catch (Exception $e) {
+            return $response->withStatus(400);
+        }
         if (! $user) {
             return $response->withStatus(404);
         }
