@@ -10,13 +10,9 @@ class UserFactory
 {
     public function __invoke(ContainerInterface $container)
     {
-        $adapter = ($container->has(AdapterInterface::class))
-            ? $container->get(AdapterInterface::class)
-            : null;
-        $urlHelper = ($container->has(UrlHelper::class))
-            ? $container->get(UrlHelper::class)
-            : null;
+        $userModel = $container->get(UserModel::class);
+        $urlHelper = $container->get(UrlHelper::class);
 
-        return new User(new UserModel($adapter), $urlHelper);
+        return new User($userModel, $urlHelper);
     }
 }
