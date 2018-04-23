@@ -1,35 +1,45 @@
 <?php
 
-use Zend\Stdlib\ArrayUtils;
-use Zend\Stdlib\Glob;
+declare(strict_types=1);
 
-/**
- * Configuration files are loaded in a specific order. First ``global.php``, then ``*.global.php``.
- * then ``local.php`` and finally ``*.local.php``. This way local settings overwrite global settings.
- *
- * The configuration can be cached. This can be done by setting ``config_cache_enabled`` to ``true``.
- *
- * Obviously, if you use closures in your config you can't cache it.
- */
+use Zend\ConfigAggregator\ArrayProvider;
+use Zend\ConfigAggregator\ConfigAggregator;
+use Zend\ConfigAggregator\PhpFileProvider;
 
-$cachedConfigFile = 'data/cache/app_config.php';
+// To enable or disable caching, set the `ConfigAggregator::ENABLE_CACHE` boolean in
+// `config/autoload/local.php`.
+$cacheConfig = [
+    'config_cache_path' => 'data/cache/config-cache.php',
+];
 
-$config = [];
-if (is_file($cachedConfigFile)) {
-    // Try to load the cached config
-    $config = include $cachedConfigFile;
-} else {
-    // Load configuration from autoload path
-    foreach (Glob::glob('config/autoload/{{,*.}global,{,*.}local}.php', Glob::GLOB_BRACE) as $file) {
-        $config = ArrayUtils::merge($config, include $file);
-    }
+$aggregator = new ConfigAggregator([
+    \Zend\Hydrator\ConfigProvider::class,
+    \Zend\Paginator\ConfigProvider::class,
+    \Zend\Expressive\Hal\ConfigProvider::class,
+    \Zend\ProblemDetails\ConfigProvider::class,
+    \Zend\Db\ConfigProvider::class,
+    \Zend\Expressive\Router\FastRouteRouter\ConfigProvider::class,
+    \Zend\HttpHandlerRunner\ConfigProvider::class,
+    // Include cache configuration
+    new ArrayProvider($cacheConfig),
 
-    // Cache config if enabled
-    if (isset($config['config_cache_enabled']) && $config['config_cache_enabled'] === true) {
-        file_put_contents($cachedConfigFile, '<?php return ' . var_export($config, true) . ';');
-    }
-}
+    \Zend\Expressive\Helper\ConfigProvider::class,
+    \Zend\Expressive\ConfigProvider::class,
+    \Zend\Expressive\Router\ConfigProvider::class,
 
-// Return an ArrayObject so we can inject the config as a service in Aura.Di
-// and still use array checks like ``is_array``.
-return new ArrayObject($config, ArrayObject::ARRAY_AS_PROPS);
+    // Default App module config
+    App\ConfigProvider::class,
+
+    // Load application config in a pre-defined order in such a way that local settings
+    // overwrite global settings. (Loaded as first to last):
+    //   - `global.php`
+    //   - `*.global.php`
+    //   - `local.php`
+    //   - `*.local.php`
+    new PhpFileProvider(realpath(__DIR__) . '/autoload/{{,*.}global,{,*.}local}.php'),
+
+    // Load development config if it exists
+    new PhpFileProvider(realpath(__DIR__) . '/development.config.php'),
+], $cacheConfig['config_cache_path']);
+
+return $aggregator->getMergedConfig();

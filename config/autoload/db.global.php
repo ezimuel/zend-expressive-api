@@ -1,9 +1,8 @@
 <?php
-$provider = new Zend\Db\ConfigProvider();
 
-return array_merge($provider(), [
+return [
     'db' => [
         'driver' => 'Pdo_Sqlite',
-        'database' => 'data/users.sqlite3'
+        'database' => 'data/users.sqlite'
     ],
-]);
+];
