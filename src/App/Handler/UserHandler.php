@@ -11,6 +11,7 @@ use Zend\Diactoros\Response\JsonResponse;
 use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Expressive\Hal\HalResponseFactory;
 use Zend\Expressive\Hal\ResourceGenerator;
+use Zend\Expressive\Hal\ResourceGenerator\Exception\OutOfBoundsException;
 use Zend\Expressive\Helper\UrlHelper;
 
 class UserHandler implements RequestHandlerInterface
@@ -42,11 +43,14 @@ class UserHandler implements RequestHandlerInterface
             $users = $this->model->getAll();
             $users->setItemCountPerPage(25);
             $users->setCurrentPageNumber($page);
-
-            return $this->responseFactory->createResponse(
-                $request,
-                $this->resourceGenerator->fromObject($users, $request)
-            );
+            try {
+                return $this->responseFactory->createResponse(
+                    $request,
+                    $this->resourceGenerator->fromObject($users, $request)
+                );
+            } catch (OutOfBoundsException $e) {
+                throw Exception\OutOfBoundsException::create($e->getMessage());
+            }
         }
         $user = $this->model->getUser($id);
         if (empty($user)) {
@@ -68,16 +72,25 @@ class UserHandler implements RequestHandlerInterface
             throw Exception\MissingParameterException::create($e->getMessage());
         }
         if ($id === null) {
-            throw Exception\RuntimeException::create($e->getMessage());
+            throw Exception\RuntimeException::create(
+                'Ops, something went wrong. Please contact the administrator'
+            );
         }
-        $response = $response->withHeader( 'Location', $this->helper->generate('api.user', ['id' => $id]));
-        return $response->withStatus(201);
+        $response = new EmptyResponse(201);
+        return $response->withHeader(
+            'Location',
+            $this->helper->generate('api.user', ['id' => $id])
+        );
     }
 
     public function patch(ServerRequestInterface $request) : ResponseInterface
     {
         $id = $request->getAttribute('id');
-        $user = $this->model->updateUser($id, $request->getParsedBody());
+        try {
+            $user = $this->model->updateUser($id, $request->getParsedBody());
+        } catch (DomainException $e) {
+            throw Exception\MissingParameterException::create($e->getMessage());
+        }
         if (empty($user)) {
             throw Exception\NoResourceFoundException::create('User not found');
         }

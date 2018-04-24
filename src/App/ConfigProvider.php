@@ -59,7 +59,7 @@ class ConfigProvider
             [
                 '__class__' => RouteBasedCollectionMetadata::class,
                 'collection_class' =>  Model\UserCollection::class,
-                'collection_relation' => 'user',
+                'collection_relation' => 'users',
                 'route' => 'api.users',
             ]
         ];

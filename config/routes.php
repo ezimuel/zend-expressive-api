@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Application;
+use Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware;
 use Zend\Expressive\MiddlewareFactory;
 
 /**
@@ -33,7 +34,13 @@ use Zend\Expressive\MiddlewareFactory;
  * );
  */
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
-    $app->get('/api/users', App\Handler\UserHandler::class, 'api.users');
-    $app->route('/api/users/{id}', App\Handler\UserHandler::class, ['GET', 'POST', 'PATCH', 'DELETE'], 'api.user');
+    $app->route('/api/users', [
+        BodyParamsMiddleware::class,
+        App\Handler\UserHandler::class
+    ], ['GET', 'POST'], 'api.users');
+    $app->route('/api/users/{id}', [
+        BodyParamsMiddleware::class,
+        App\Handler\UserHandler::class
+    ], ['GET', 'PATCH', 'DELETE'], 'api.user');
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
 };

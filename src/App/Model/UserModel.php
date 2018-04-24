@@ -2,6 +2,7 @@
 namespace App\Model;
 
 use DomainException;
+use PDOException;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\TableGateway\TableGateway;
@@ -25,7 +26,7 @@ class UserModel
     public function getAll(): Paginator
     {
         $dbTableGatewayAdapter = new DbTableGateway($this->table);
-        $paginator = new Paginator($dbTableGatewayAdapter);
+        $paginator = new UserCollection($dbTableGatewayAdapter);
         return $paginator;
     }
 
@@ -48,10 +49,10 @@ class UserModel
     public function addUser(array $data): ?int
     {
         if (!isset($data['email'])) {
-            throw new DomainException('The email is required');
+            throw new DomainException('Email is a required field');
         }
         if (!isset($data['password'])) {
-            throw new DomainException('The email is required');
+            throw new DomainException('Password is a required field');
         }
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         $rows = $this->table->insert($data);
@@ -63,7 +64,11 @@ class UserModel
      */
     public function updateUser(int $id, array $data): ?UserEntity
     {
-        $rows = $this->table->update($data, [ 'id' => $id ]);
+        try {
+            $rows = $this->table->update($data, [ 'id' => $id ]);
+        } catch (PDOException $e) {
+            throw new DomainException($e->getMessage());
+        }
         return ($rows === 1) ? $this->getUser($id) : null;
     }
 
