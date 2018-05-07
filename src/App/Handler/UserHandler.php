@@ -37,22 +37,11 @@ class UserHandler implements RequestHandlerInterface
 
     public function get(ServerRequestInterface $request) : ResponseInterface
     {
-        $id = (int) $request->getAttribute('id');
+        $id = $request->getAttribute('id', false);
         if (! $id) {
-            $page = $request->getQueryParams()['page'] ?? 1;
-            $users = $this->model->getAll();
-            $users->setItemCountPerPage(25);
-            $users->setCurrentPageNumber($page);
-            try {
-                return $this->responseFactory->createResponse(
-                    $request,
-                    $this->resourceGenerator->fromObject($users, $request)
-                );
-            } catch (OutOfBoundsException $e) {
-                throw Exception\OutOfBoundsException::create($e->getMessage());
-            }
+            return $this->getAllUsers($request);
         }
-        $user = $this->model->getUser($id);
+        $user = $this->model->getUser((int) $id);
         if (empty($user)) {
             throw Exception\NoResourceFoundException::create('User not found');
         }
@@ -61,6 +50,22 @@ class UserHandler implements RequestHandlerInterface
             $request,
             $this->resourceGenerator->fromObject($user, $request)
         );
+    }
+
+    public function getAllUsers(ServerRequestInterface $request): ResponseInterface
+    {
+        $page = $request->getQueryParams()['page'] ?? 1;
+        $users = $this->model->getAll();
+        $users->setItemCountPerPage(25);
+        $users->setCurrentPageNumber($page);
+        try {
+            return $this->responseFactory->createResponse(
+                $request,
+                $this->resourceGenerator->fromObject($users, $request)
+            );
+        } catch (OutOfBoundsException $e) {
+            throw Exception\OutOfBoundsException::create($e->getMessage());
+        }
     }
 
     public function post(ServerRequestInterface $request) : ResponseInterface
@@ -79,13 +84,13 @@ class UserHandler implements RequestHandlerInterface
         $response = new EmptyResponse(201);
         return $response->withHeader(
             'Location',
-            $this->helper->generate('api.user', ['id' => $id])
+            $this->helper->generate('api.users', ['id' => $id])
         );
     }
 
     public function patch(ServerRequestInterface $request) : ResponseInterface
     {
-        $id = $request->getAttribute('id');
+        $id = (int) $request->getAttribute('id');
         try {
             $user = $this->model->updateUser($id, $request->getParsedBody());
         } catch (DomainException $e) {
@@ -99,7 +104,7 @@ class UserHandler implements RequestHandlerInterface
 
     public function delete(ServerRequestInterface $request) : ResponseInterface
     {
-        $id = $request->getAttribute('id');
+        $id = (int) $request->getAttribute('id');
         $result = $this->model->deleteUser($id);
         if (! $result) {
             throw Exception\NoResourceFoundException::create('User not found');

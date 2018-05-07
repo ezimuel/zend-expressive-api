@@ -53,7 +53,7 @@ class ConfigProvider
             [
                 '__class__' => RouteBasedResourceMetadata::class,
                 'resource_class' => Model\UserEntity::class,
-                'route' => 'api.user',
+                'route' => 'api.users',
                 'extractor' => ObjectPropertyHydrator::class,
             ],
             [

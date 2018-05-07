@@ -34,13 +34,10 @@ use Zend\Expressive\MiddlewareFactory;
  * );
  */
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
-    $app->route('/api/users', [
+    $app->route('/api/users[/{id}]', [
         BodyParamsMiddleware::class,
         App\Handler\UserHandler::class
-    ], ['GET', 'POST'], 'api.users');
-    $app->route('/api/users/{id}', [
-        BodyParamsMiddleware::class,
-        App\Handler\UserHandler::class
-    ], ['GET', 'PATCH', 'DELETE'], 'api.user');
+    ], ['GET', 'POST', 'PATCH', 'DELETE'], 'api.users');
+    
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
 };
