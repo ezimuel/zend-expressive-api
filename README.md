@@ -1,10 +1,15 @@
-# Zend Expressive API
+# Zend Expressive API - Skeleton example
 
-This is a skeleton application for building web APIs using [zend-expressive](https://github.com/zendframework/zend-expressive).
+This is a skeleton application for building REST API using [zend-expressive](https://github.com/zendframework/zend-expressive).
 
-We used the zend-expressive programmatic approach configuration. You can check
-out the [public/index.php](public/index.php) file to see the usage of middleware
-piping.
+The representational format used is [HAL-JSON](https://tools.ietf.org/html/draft-kelly-json-hal-08)
+and the error reporting is performed using [Problem Details](https://tools.ietf.org/html/rfc7807).
+
+Moreover, we used [OAuth2](https://oauth.net/2/) to authenticate the POST, PATCH
+and DELETE HTTP methods.
+
+In the skeleton we provided an example using `/api/users[/{id}]` route, you can
+find more information in the [REST example](#REST-example) section.
 
 ## Setup
 
@@ -15,83 +20,10 @@ You can run the following command:
 $ composer install
 ```
 
-## Status
+## REST example
 
-The status of this project is **work-in-progress**, please consider this if you
-want to use it.
-
-## Usage
-
-This skeleton application includes some APIs example:
-
-- RPC calls, using simple anonymous functions;
-- REST API, using a service manager.
-
-### RPC
-
-You can have al look at RPC calls using the [public/rpc.php](public/rpc.php) file.
-For instance, you can use the internal PHP web server to test it:
-
-```bash
-$ php -S 0.0.0.0:8080 -t public public/rpc.php
-```
-
-You can test it using a HTTP client. The API calls that you can test are:
-
-```
-GET `/api/ping`
-GET `/api/hello/{name}`
-```
-
-Where {name} is a parameter that you can use to pass a string.
-
-For instance, using [HTTPie](https://github.com/jkbrzt/httpie),
-you can call the `/api/ping` URL using the following command:
-
-```bash
-$ http GET http://localhost:8080/api/ping
-```
-
-You will get something like this:
-
-```
-HTTP/1.1 200 OK
-Connection: close
-Content-Length: 18
-Content-Type: application/json
-Host: localhost:8080
-
-{
-    "ack": 1476900096
-}
-```
-
-For the `/api/hello/{name}` you can use the following request:
-
-```bash
-$ http GET http://localhost:8080/api/hello/Enrico
-```
-
-```
-HTTP/1.1 200 OK
-Connection: close
-Content-Length: 18
-Content-Type: application/json
-Host: localhost:8080
-
-{
-    "hello": "Enrico"
-}
-```
-
-Of course, you can have RPC API also using the following REST architecture.
-We used anonymous functions for PRC to show how can be easy to create simple
-APIs on the fly, with very good response time.
-
-### REST
-
-We provide a REST API using a User resource with a simple SQLite db with the
-following schema:
+We provide a REST API using a User resource with a simple [SQLite](https://www.sqlite.org)
+database with schema as follows:
 
 ```sql
 CREATE TABLE users (
@@ -105,18 +37,20 @@ CREATE TABLE users (
 We published the following URLs:
 
 - GET `/api/user[/{id:\d+}]`
-- POST `/api/user`
-- PATCH `/api/user/{id:\d+}`
-- DELETE `/api/user/{id:\d+}`
+- POST `/api/user` *
+- PATCH `/api/user/{id:\d+}` *
+- DELETE `/api/user/{id:\d+}` *
+
+* = requires OAuth2 Authentication
 
 In order to execute the REST API you need to use the `public/index.php` file.
 Using the internal web server of PHP you can use the following command:
 
 ```bash
-$ php -S 0.0.0.0:8080 -t public public/rpc.php
+$ php -S 0.0.0.0:8080 -t public public/index.php
 ```
 
-Here we reported some example of usage using HTTPie client:
+Here we reported some example of usage using [HTTPie](https://httpie.org/) client:
 
 #### GET
 
@@ -131,25 +65,35 @@ Response:
 ```
 HTTP/1.1 200 OK
 Connection: close
-Content-Length: 254
-Content-Type: application/json
+Content-Type: application/hal+json
+Date: Mon, 07 May 2018 14:54:46 +0200
 Host: localhost:8080
+X-Powered-By: PHP/7.2.4-1+ubuntu17.10.1+deb.sury.org+1
 
 {
-    " users": [
-        {
-            "email": "foo@host.com",
-            "id": "1",
-            "name": "Foo",
-            "password": "$2y$10$34w0udB8WTSKEzkaRzgmHev8Lx5EcK07Fs.SMZXnNc8w3yNPUXjNW"
+    "_embedded": {
+        "users": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http://localhost:8080/api/users/1"
+                    }
+                },
+                "email": "foo@host.com",
+                "id": "1",
+                "name": "Foo",
+                "password": "$2y$10$34w0udB8WTSKEzkaRzgmHev8Lx5EcK07Fs.SMZXnNc8w3yNPUXjNW"
+            }
+        ]
+    },
+    "_links": {
+            "self": {
+                "href": "http://localhost:8080/api/users?page=1"
+            }
         },
-        {
-            "email": "bar@host.com",
-            "id": "2",
-            "name": "Bar",
-            "password": "$2y$10$9wTSa.QrGxP9Q3zjLC74cebwA1ro5a7JOzvFHnSCApPDoutRfvGmW"
-        }
-    ]
+        "_page": 1,
+        "_page_count": 1,
+        "_total_items": 1
 }
 ```
 
@@ -158,7 +102,7 @@ Host: localhost:8080
 Request:
 
 ```bash
-$ http POST http://localhost:8080/api/user name=Baz email=baz@host.com password=test --json
+$ http POST http://localhost:8080/api/users name=Baz email=baz@host.com password=12345678
 ```
 
 Response:
@@ -166,13 +110,27 @@ Response:
 ```
 HTTP/1.1 201 Created
 Connection: close
-Content-Length: 0
-Content-type: text/html; charset=UTF-8
+Content-Type: application/hal+json
+Date: Mon, 07 May 2018 15:03:05 +0200
 Host: localhost:8080
-Location: /api/user/3
+Location: /api/users/3
+X-Powered-By: PHP/7.2.4-1+ubuntu17.10.1+deb.sury.org+1
+
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost:8080/api/users/3"
+        }
+    },
+    "email": "baz@host.com",
+    "id": "3",
+    "name": "Baz",
+    "password": "$2y$10$5mVity8pNL/4bgWqJnrfo.9YL./LXeS9p5HvSyYq9yiYoYCheX78q"
+}
+
 ```
 
-The user Baz has been created in the following location `/api/user/3`.
+The user `Baz` has been created in the following location `/api/user/3`.
 Note that the password are stored using the [bcrypt](https://en.wikipedia.org/wiki/Bcrypt)
 algorithm.
 
@@ -181,7 +139,7 @@ algorithm.
 Request:
 
 ```bash
-$ http PATCH http://localhost:8080/api/user/3 name=Enrico --json
+$ http PATCH http://localhost:8080/api/users/3 name=Enrico
 ```
 
 Response:
@@ -189,19 +147,23 @@ Response:
 ```
 HTTP/1.1 200 OK
 Connection: close
-Content-Length: 129
-Content-Type: application/json
+Content-Type: application/hal+json
+Date: Mon, 07 May 2018 15:03:59 +0200
 Host: localhost:8080
-X-Powered-By: PHP/7.0.4
+X-Powered-By: PHP/7.2.4-1+ubuntu17.10.1+deb.sury.org+1
 
 {
-    "user": {
-        "email": "baz@host.com",
-        "id": "3",
-        "name": "Enrico",
-        "password": "$2y$10$tRG3Wan7jTJOOm2w8Jy3Au4ViJwol1q6ZToykM7qhDRPv174cIf6u"
-    }
+    "_links": {
+        "self": {
+            "href": "http://localhost:8080/api/users/3"
+        }
+    },
+    "email": "baz@host.com",
+    "id": "3",
+    "name": "Enrico",
+    "password": "$2y$10$5mVity8pNL/4bgWqJnrfo.9YL./LXeS9p5HvSyYq9yiYoYCheX78q"
 }
+
 ```
 
 #### DELETE
@@ -209,7 +171,7 @@ X-Powered-By: PHP/7.0.4
 Request:
 
 ```bash
-$ http DELETE http://localhost:8080/api/user/3
+$ http DELETE http://localhost:8080/api/users/3
 ```
 
 Response:
@@ -217,7 +179,45 @@ Response:
 ```
 HTTP/1.1 204 No Content
 Connection: close
-Content-Length: 0
 Content-type: text/html; charset=UTF-8
+Date: Mon, 07 May 2018 15:04:44 +0200
 Host: localhost:8080
+X-Powered-By: PHP/7.2.4-1+ubuntu17.10.1+deb.sury.org+1
+```
+
+## OAuth2
+
+In order to get a Bearer token for OAuth2 you need to execute the following
+command (using the default SQLite OAuth2 database example):
+
+```bash
+http POST http://localhost:8080/oauth grant_type=password username=user_test
+     password=test client_id=client_test client_secret=test scope=test -f
+```
+
+This will produce an output as follows:
+
+```
+HTTP/1.1 200 OK
+Cache-Control: no-store
+Connection: close
+Content-Type: application/json; charset=UTF-8
+Date: Mon, 07 May 2018 17:49:39 +0200
+Host: localhost:8080
+Pragma: no-cache
+X-Powered-By: PHP/7.2.4-1+ubuntu17.10.1+deb.sury.org+1
+
+{
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJS...Aw",
+    "expires_in": 86400,
+    "refresh_token": "def502009bbaf70068c8b4007c1b9645d173ce5183...ba3",
+    "token_type": "Bearer"
+}
+```
+
+In order to execute the POST, PATCH and DELETE methods you need to add the
+`access_token` as `Authorization` header, as follows (with HTTPie command):
+
+```bash
+http POST http://localhost:8080/api/users 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJS...Aw'
 ```

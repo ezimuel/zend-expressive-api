@@ -2,17 +2,20 @@
 namespace App\Handler;
 
 use DomainException;
+use PharIo\Manifest\Email;
 use App\Exception;
+use App\InputFilter\UserInputFilter;
 use App\Model\UserModel;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Diactoros\Response\JsonResponse;
 use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Expressive\Hal\HalResponseFactory;
 use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Expressive\Hal\ResourceGenerator\Exception\OutOfBoundsException;
 use Zend\Expressive\Helper\UrlHelper;
+use Zend\InputFilter\Input;
+use Zend\Validator;
 
 class UserHandler implements RequestHandlerInterface
 {
@@ -20,6 +23,7 @@ class UserHandler implements RequestHandlerInterface
     private $resourceGenerator;
     private $responseFactory;
     private $helper;
+    private $inputFilter;
 
     use RestDispatchTrait;
 
@@ -27,18 +31,20 @@ class UserHandler implements RequestHandlerInterface
         UserModel $model,
         ResourceGenerator $resourceGenerator,
         HalResponseFactory $responseFactory,
-        UrlHelper $helper
+        UrlHelper $helper,
+        UserInputFilter $inputFilter
     ) {
         $this->model = $model;
         $this->resourceGenerator = $resourceGenerator;
         $this->responseFactory = $responseFactory;
         $this->helper = $helper;
+        $this->inputFilter = $inputFilter;
     }
 
     public function get(ServerRequestInterface $request) : ResponseInterface
     {
         $id = $request->getAttribute('id', false);
-        if (! $id) {
+        if (false === $id) {
             return $this->getAllUsers($request);
         }
         $user = $this->model->getUser((int) $id);
@@ -46,10 +52,7 @@ class UserHandler implements RequestHandlerInterface
             throw Exception\NoResourceFoundException::create('User not found');
         }
 
-        return $this->responseFactory->createResponse(
-            $request,
-            $this->resourceGenerator->fromObject($user, $request)
-        );
+        return $this->createResponse($request, $user);
     }
 
     public function getAllUsers(ServerRequestInterface $request): ResponseInterface
@@ -59,10 +62,7 @@ class UserHandler implements RequestHandlerInterface
         $users->setItemCountPerPage(25);
         $users->setCurrentPageNumber($page);
         try {
-            return $this->responseFactory->createResponse(
-                $request,
-                $this->resourceGenerator->fromObject($users, $request)
-            );
+            return $this->createResponse($request, $users);
         } catch (OutOfBoundsException $e) {
             throw Exception\OutOfBoundsException::create($e->getMessage());
         }
@@ -70,7 +70,20 @@ class UserHandler implements RequestHandlerInterface
 
     public function post(ServerRequestInterface $request) : ResponseInterface
     {
+        $id = $request->getAttribute('id', false);
+        if (false !== $id) {
+            throw Exception\MethodNotAllowedException::create('You cannot POST on a specific user, use PATCH instead');
+        }
         $user = $request->getParsedBody();
+        // Filter input data
+        $this->inputFilter->setData($request->getParsedBody());
+        if (! $this->inputFilter->isValid()) {
+            throw Exception\InvalidParameterException::create(
+                'Invalid parameter',
+                $this->inputFilter->getMessages()
+            );
+        }
+
         try {
             $id = $this->model->addUser($user);
         } catch (DomainException $e) {
@@ -81,8 +94,8 @@ class UserHandler implements RequestHandlerInterface
                 'Ops, something went wrong. Please contact the administrator'
             );
         }
-        $response = new EmptyResponse(201);
-        return $response->withHeader(
+        $response = $this->createResponse($request, $this->model->getUser($id));
+        return $response->withStatus(201)->withHeader(
             'Location',
             $this->helper->generate('api.users', ['id' => $id])
         );
@@ -91,15 +104,28 @@ class UserHandler implements RequestHandlerInterface
     public function patch(ServerRequestInterface $request) : ResponseInterface
     {
         $id = (int) $request->getAttribute('id');
+
+        $this->inputFilter->setData($request->getParsedBody());
+        $this->inputFilter->get('email')->setRequired(false);
+        $this->inputFilter->get('password')->setRequired(false);
+        if (! $this->inputFilter->isValid()) {
+            throw Exception\InvalidParameterException::create(
+                'Invalid parameter',
+                $this->inputFilter->getMessages()
+            );
+        }
+
         try {
             $user = $this->model->updateUser($id, $request->getParsedBody());
         } catch (DomainException $e) {
-            throw Exception\MissingParameterException::create($e->getMessage());
+            throw Exception\MissingParameterException::create(
+                'Missing parameter'
+            );
         }
         if (empty($user)) {
             throw Exception\NoResourceFoundException::create('User not found');
         }
-        return new JsonResponse(['user' => $user]);
+        return $this->createResponse($request, $user);
     }
 
     public function delete(ServerRequestInterface $request) : ResponseInterface
@@ -110,5 +136,13 @@ class UserHandler implements RequestHandlerInterface
             throw Exception\NoResourceFoundException::create('User not found');
         }
         return new EmptyResponse(204);
+    }
+
+    protected function createResponse(ServerRequestInterface $request, object $user): ResponseInterface
+    {
+        return $this->responseFactory->createResponse(
+            $request,
+            $this->resourceGenerator->fromObject($user, $request)
+        );
     }
 }

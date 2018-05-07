@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App;
 
 use App\Model;
+use Zend\Expressive\Authentication;
 use Zend\Expressive\Hal\Metadata\MetadataMap;
 use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
 use Zend\Expressive\Hal\Metadata\RouteBasedResourceMetadata;
@@ -27,7 +28,8 @@ class ConfigProvider
     {
         return [
             'dependencies' => $this->getDependencies(),
-            MetadataMap::class => $this->getHalConfig()
+            MetadataMap::class => $this->getHalConfig(),
+            'authentication' => $this->getAuthenticationConfig()
         ];
     }
 
@@ -37,12 +39,12 @@ class ConfigProvider
     public function getDependencies() : array
     {
         return [
-            'invokables' => [
-                Handler\PingHandler::class => Handler\PingHandler::class,
-            ],
             'factories'  => [
                 Handler\UserHandler::class => Handler\UserHandlerFactory::class,
                 Model\UserModel::class => Model\UserModelFactory::class
+            ],
+            'aliases' => [
+                Authentication\AuthenticationInterface::class => Authentication\OAuth2\OAuth2Adapter::class,
             ],
         ];
     }
@@ -61,6 +63,21 @@ class ConfigProvider
                 'collection_class' =>  Model\UserCollection::class,
                 'collection_relation' => 'users',
                 'route' => 'api.users',
+            ]
+        ];
+    }
+
+    public function getAuthenticationConfig()
+    {
+        return [
+            'private_key'    => __DIR__ . '/../../data/oauth2/private.key',
+            'public_key'     => __DIR__ . '/../../data/oauth2/public.key',
+            'encryption_key' => require __DIR__ . '/../../data/oauth2/encryption.key',
+            'access_token_expire'  => 'P1D',
+            'refresh_token_expire' => 'P1M',
+            'auth_code_expire'     => 'PT10M',
+            'pdo' => [
+                'dsn'      => 'sqlite:' . __DIR__ . '/../../data/oauth2.sqlite'
             ]
         ];
     }

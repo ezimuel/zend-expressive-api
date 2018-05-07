@@ -5,7 +5,7 @@ use DomainException;
 use Zend\ProblemDetails\Exception\CommonProblemDetailsExceptionTrait;
 use Zend\ProblemDetails\Exception\ProblemDetailsExceptionInterface;
 
-class MissingParameterException extends DomainException implements ProblemDetailsExceptionInterface
+class InvalidParameterException extends DomainException implements ProblemDetailsExceptionInterface
 {
     use CommonProblemDetailsExceptionTrait;
 
@@ -14,9 +14,9 @@ class MissingParameterException extends DomainException implements ProblemDetail
         $e = new self($message);
         $e->status = 400;
         $e->detail = $message;
-        $e->type = 'https://example.com/api/doc/missing-parameter';
-        $e->title = 'Missing parameter';
-        $e->additionalData['parameters'] = $additionalData;
+        $e->type = 'https://example.com/api/doc/invalid-parameter';
+        $e->title = 'Invalid parameter';
+        $e->additional['parameters'] = $additionalData;
         return $e;
     }
 }
