@@ -5,7 +5,6 @@ namespace App;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Expressive\Hal\HalResponseFactory;
 use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Expressive\Hal\ResourceGenerator\Exception\OutOfBoundsException;
@@ -28,6 +27,8 @@ trait RestDispatchTrait
      * Otherwise, returns an empty 501 response.
      *
      * {@inheritDoc}
+     *
+     * @throws Exception\MethodNotAllowedException if no matching method is found.
      */
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
@@ -35,7 +36,10 @@ trait RestDispatchTrait
         if (method_exists($this, $method)) {
             return $this->$method($request);
         }
-        return new EmptyResponse(501); // Method not implemented
+        throw Exception\MethodNotAllowedException::create(sprintf(
+            'Method %s is not implemented for the requested resource',
+            strtoupper($method)
+        ));
     }
 
     /**
