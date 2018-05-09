@@ -81,8 +81,7 @@ X-Powered-By: PHP/7.2.4-1+ubuntu17.10.1+deb.sury.org+1
                 },
                 "email": "foo@host.com",
                 "id": "1",
-                "name": "Foo",
-                "password": "$2y$10$34w0udB8WTSKEzkaRzgmHev8Lx5EcK07Fs.SMZXnNc8w3yNPUXjNW"
+                "name": "Foo"
             }
         ]
     },
@@ -96,6 +95,9 @@ X-Powered-By: PHP/7.2.4-1+ubuntu17.10.1+deb.sury.org+1
         "_total_items": 1
 }
 ```
+
+Note that the individual users **do not** include the password; we never want to
+return passwords from our API!
 
 #### POST
 
@@ -124,15 +126,15 @@ X-Powered-By: PHP/7.2.4-1+ubuntu17.10.1+deb.sury.org+1
     },
     "email": "baz@host.com",
     "id": "3",
-    "name": "Baz",
-    "password": "$2y$10$5mVity8pNL/4bgWqJnrfo.9YL./LXeS9p5HvSyYq9yiYoYCheX78q"
+    "name": "Baz"
 }
 
 ```
 
 The user `Baz` has been created in the following location `/api/user/3`.
-Note that the password are stored using the [bcrypt](https://en.wikipedia.org/wiki/Bcrypt)
-algorithm.
+
+Passwords are stored internally using the [bcrypt](https://en.wikipedia.org/wiki/Bcrypt)
+algorithm. You can examine them in the database to verify.
 
 #### PATCH
 
@@ -160,8 +162,7 @@ X-Powered-By: PHP/7.2.4-1+ubuntu17.10.1+deb.sury.org+1
     },
     "email": "baz@host.com",
     "id": "3",
-    "name": "Enrico",
-    "password": "$2y$10$5mVity8pNL/4bgWqJnrfo.9YL./LXeS9p5HvSyYq9yiYoYCheX78q"
+    "name": "Enrico"
 }
 
 ```
