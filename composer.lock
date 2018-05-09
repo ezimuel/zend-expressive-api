@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "726ca1045e7545d26a58a7e471ef1950",
+    "content-hash": "20c520b5fd22a46ae6e05ca22ae6c67c",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1295,16 +1295,16 @@
         },
         {
             "name": "zendframework/zend-expressive-authentication",
-            "version": "1.0.0alpha4",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-expressive-authentication.git",
-                "reference": "290e4d67fb9b5728755e3bf6082242578ceb51ad"
+                "reference": "2fea5529d78cddc26921e46e87ea886ccb8cc7d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-expressive-authentication/zipball/290e4d67fb9b5728755e3bf6082242578ceb51ad",
-                "reference": "290e4d67fb9b5728755e3bf6082242578ceb51ad",
+                "url": "https://api.github.com/repos/zendframework/zend-expressive-authentication/zipball/2fea5529d78cddc26921e46e87ea886ccb8cc7d1",
+                "reference": "2fea5529d78cddc26921e46e87ea886ccb8cc7d1",
                 "shasum": ""
             },
             "require": {
@@ -1330,8 +1330,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.2.x-dev",
-                    "dev-release-1.0.0": "1.0.x-dev"
+                    "dev-master": "0.4.x-dev"
                 },
                 "zf": {
                     "config-provider": "Zend\\Expressive\\Authentication\\ConfigProvider"
@@ -1357,20 +1356,20 @@
                 "zend-expressive",
                 "zf"
             ],
-            "time": "2018-02-27T14:48:50+00:00"
+            "time": "2018-03-15T17:19:40+00:00"
         },
         {
             "name": "zendframework/zend-expressive-authentication-oauth2",
-            "version": "1.0.0alpha4",
+            "version": "0.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-expressive-authentication-oauth2.git",
-                "reference": "2a0a7d9a1ea74f4fbb0b9c613c3d4170df90a722"
+                "reference": "10f5fcc9eb502eb4e8b0d072b035e9932b644cf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-expressive-authentication-oauth2/zipball/2a0a7d9a1ea74f4fbb0b9c613c3d4170df90a722",
-                "reference": "2a0a7d9a1ea74f4fbb0b9c613c3d4170df90a722",
+                "url": "https://api.github.com/repos/zendframework/zend-expressive-authentication-oauth2/zipball/10f5fcc9eb502eb4e8b0d072b035e9932b644cf1",
+                "reference": "10f5fcc9eb502eb4e8b0d072b035e9932b644cf1",
                 "shasum": ""
             },
             "require": {
@@ -1379,7 +1378,7 @@
                 "psr/container": "^1.0",
                 "psr/http-message": "^1.0.1",
                 "psr/http-server-middleware": "^1.0",
-                "zendframework/zend-expressive-authentication": "^1.0.0alpha3"
+                "zendframework/zend-expressive-authentication": "^0.4.0"
             },
             "conflict": {
                 "container-interop/container-interop": "<1.2.0"
@@ -1390,11 +1389,13 @@
                 "zendframework/zend-coding-standard": "~1.0.0",
                 "zendframework/zend-diactoros": "^1.4.0"
             },
+            "bin": [
+                "bin/generate-oauth2-keys"
+            ],
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.2.x-dev",
-                    "dev-release-1.0.0": "1.0.x-dev"
+                    "dev-master": "0.4.x-dev"
                 }
             },
             "autoload": {
@@ -1417,7 +1418,7 @@
                 "psr-7",
                 "zf"
             ],
-            "time": "2018-02-28T23:09:51+00:00"
+            "time": "2018-05-09T20:59:43+00:00"
         },
         {
             "name": "zendframework/zend-expressive-fastroute",
@@ -3834,16 +3835,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.1.0-BETA1",
+            "version": "v4.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "00f24b3c437c902becd39a74670bd7fc253e50c5"
+                "reference": "3e820bc2c520a87ca209ad8fa961c97f42e0b4ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/00f24b3c437c902becd39a74670bd7fc253e50c5",
-                "reference": "00f24b3c437c902becd39a74670bd7fc253e50c5",
+                "url": "https://api.github.com/repos/symfony/console/zipball/3e820bc2c520a87ca209ad8fa961c97f42e0b4ae",
+                "reference": "3e820bc2c520a87ca209ad8fa961c97f42e0b4ae",
                 "shasum": ""
             },
             "require": {
@@ -3871,7 +3872,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1-dev"
+                    "dev-master": "4.0-dev"
                 }
             },
             "autoload": {
@@ -3898,7 +3899,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-04T00:03:52+00:00"
+            "time": "2018-04-30T01:23:47+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -4356,11 +4357,9 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "alpha",
+    "minimum-stability": "stable",
     "stability-flags": {
-        "roave/security-advisories": 20,
-        "zendframework/zend-expressive-authentication": 15,
-        "zendframework/zend-expressive-authentication-oauth2": 15
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

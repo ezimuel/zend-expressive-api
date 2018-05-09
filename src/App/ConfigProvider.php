@@ -28,7 +28,7 @@ class ConfigProvider
         return [
             'dependencies' => $this->getDependencies(),
             MetadataMap::class => $this->getHalConfig(),
-            'authentication' => $this->getAuthenticationConfig()
+            'authentication' => $this->getAuthenticationConfig(),
         ];
     }
 
@@ -71,14 +71,14 @@ class ConfigProvider
     public function getAuthenticationConfig()
     {
         return [
-            'private_key'    => __DIR__ . '/../../data/oauth2/private.key',
-            'public_key'     => __DIR__ . '/../../data/oauth2/public.key',
-            'encryption_key' => require __DIR__ . '/../../data/oauth2/encryption.key',
+            'private_key'    => getcwd() . '/data/oauth2/private.key',
+            'public_key'     => getcwd() . '/data/oauth2/public.key',
+            'encryption_key' => require getcwd() . '/data/oauth2/encryption.key',
             'access_token_expire'  => 'P1D',
             'refresh_token_expire' => 'P1M',
             'auth_code_expire'     => 'PT10M',
             'pdo' => [
-                'dsn'      => 'sqlite:' . __DIR__ . '/../../data/oauth2.sqlite'
+                'dsn' => 'sqlite:' . getcwd() . '/data/oauth2.sqlite'
             ]
         ];
     }
