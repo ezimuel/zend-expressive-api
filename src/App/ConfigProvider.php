@@ -61,7 +61,7 @@ class ConfigProvider
             ],
             [
                 '__class__' => RouteBasedCollectionMetadata::class,
-                'collection_class' =>  User\UserCollection::class,
+                'collection_class' => User\UserCollection::class,
                 'collection_relation' => 'users',
                 'route' => 'api.users',
             ]

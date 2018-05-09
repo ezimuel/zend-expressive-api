@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\User;
 
 class UserEntity
@@ -9,11 +11,11 @@ class UserEntity
 
     public function getArrayCopy()
     {
-        return array(
+        return [
             'id'       => $this->id,
             'name'     => $this->name,
             'email'    => $this->email,
-        );
+        ];
     }
 
     public function exchangeArray(array $array)

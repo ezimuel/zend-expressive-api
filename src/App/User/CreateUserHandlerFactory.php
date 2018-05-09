@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\User;
 
 use Psr\Container\ContainerInterface;
@@ -12,7 +14,7 @@ class CreateUserHandlerFactory
     public function __invoke(ContainerInterface $container) : CreateUserHandler
     {
         $filters = $container->get('InputFilterManager');
-        
+
         return new CreateUserHandler(
             $container->get(UserModel::class),
             $container->get(ResourceGenerator::class),
