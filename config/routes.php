@@ -19,6 +19,11 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
     // API
     $app->get('/api/users[/{id}]', App\Handler\UserHandler::class, 'api.users');
+    $app->post('/api/users', [
+        Authentication\AuthenticationMiddleware::class,
+        BodyParamsMiddleware::class,
+        App\Handler\UserHandler::class
+    ]);
     $app->route(
         '/api/users[/{id}]',
         [
@@ -26,6 +31,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
             BodyParamsMiddleware::class,
             App\Handler\UserHandler::class
         ],
-        ['POST', 'PATCH', 'DELETE']
+        ['PATCH', 'DELETE']
     );
 };

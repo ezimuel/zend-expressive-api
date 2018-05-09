@@ -1,6 +1,7 @@
 <?php
 namespace App\User;
 
+use App\Exception;
 use DomainException;
 use PDOException;
 use Zend\Db\Adapter\AdapterInterface;
@@ -11,7 +12,7 @@ use Zend\Paginator\Paginator;
 
 class UserModel
 {
-    protected $table;
+    private $table;
 
     public function __construct(AdapterInterface $adapter)
     {
@@ -32,52 +33,101 @@ class UserModel
 
     /**
      * Get a user by $id
+     *
+     * @throws Exception\NoResourceFoundException
      */
-    public function getUser(int $id): ?UserEntity
+    public function getUser(int $id): UserEntity
     {
         $user = $this->table->select([ 'id' => $id ]);
         $result = $user->current();
-        if ($result instanceof UserEntity) {
-            return $result;
+        if (! $result instanceof UserEntity) {
+            throw Exception\NoResourceFoundException::create('User not found');
         }
-        return null;
+        return $result;
     }
 
     /**
      * Add a user with $data values
+     *
+     * @throws Exception\InvalidParameterException if the data is not valid.
+     * @throws Exception\RuntimeException if an error occurs during insert.
      */
-    public function addUser(array $data): ?int
+    public function addUser(array $data, UserInputFilter $inputFilter): int
     {
-        if (!isset($data['email'])) {
-            throw new DomainException('Email is a required field');
+        $inputFilter->setData($data);
+        if (! $inputFilter->isValid()) {
+            throw Exception\InvalidParameterException::create(
+                'Invalid parameter',
+                $inputFilter->getMessages()
+            );
         }
-        if (!isset($data['password'])) {
-            throw new DomainException('Password is a required field');
-        }
+
+        $data = $inputFilter->getValues();
+
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         $rows = $this->table->insert($data);
-        return ($rows === 1) ? $this->table->lastInsertValue : null;
+        $id = $rows === 1 ? $this->table->lastInsertValue : null;
+
+        if ($id === null) {
+            throw Exception\RuntimeException::create(
+                'Oops, something went wrong. Please contact the administrator'
+            );
+        }
+
+        return $id;
     }
 
     /**
      * Update the user with $id and $data
+     *
+     * @throws Exception\InvalidParameterException if the data is not valid.
+     * @throws Exception\NoResourceFoundException if no rows are returned by
+     *     the update operation.
      */
-    public function updateUser(int $id, array $data): ?UserEntity
+    public function updateUser(int $id, array $data, UserInputFilter $inputFilter): UserEntity
     {
+        $inputFilter->setData($data);
+        $inputFilter->get('email')->setRequired(false);
+        $inputFilter->get('password')->setRequired(false);
+        if (! $inputFilter->isValid()) {
+            throw Exception\InvalidParameterException::create(
+                'Invalid parameter',
+                $inputFilter->getMessages()
+            );
+        }
+
         try {
             $rows = $this->table->update($data, [ 'id' => $id ]);
         } catch (PDOException $e) {
-            throw new DomainException($e->getMessage());
+            throw Exception\RuntimeException::create(
+                'Oops, something went wrong. Please contact the administrator'
+            );
         }
-        return ($rows === 1) ? $this->getUser($id) : null;
+
+        $user = $rows === 1 ? $this->getUser($id) : null;
+
+        if (! $user) {
+            throw Exception\NoResourceFoundException::create('User not found');
+        }
+
+        return $user;
     }
 
     /**
      * Remove the user with $id
+     *
+     * @throws Exception\NoResourceFoundException if no rows are returned by
+     *     the delete operation.
      */
     public function deleteUser($id): bool
     {
         $rows = $this->table->delete([ 'id' => $id ]);
-        return ($rows === 1);
+        $result = $rows === 1;
+
+        if (! $result) {
+            throw Exception\NoResourceFoundException::create('User not found');
+        }
+
+        return true;
     }
 }
