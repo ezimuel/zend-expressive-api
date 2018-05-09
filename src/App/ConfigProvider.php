@@ -39,6 +39,8 @@ class ConfigProvider
     {
         return [
             'factories'  => [
+                User\CreateUserHandler::class => User\CreateUserHandlerFactory::class,
+                User\ModifyUserHandler::class => User\ModifyUserHandlerFactory::class,
                 User\UserHandler::class => User\UserHandlerFactory::class,
                 User\UserModel::class => User\UserModelFactory::class
             ],
@@ -54,7 +56,7 @@ class ConfigProvider
             [
                 '__class__' => RouteBasedResourceMetadata::class,
                 'resource_class' => User\UserEntity::class,
-                'route' => 'api.users',
+                'route' => 'api.user',
                 'extractor' => ObjectPropertyHydrator::class,
             ],
             [

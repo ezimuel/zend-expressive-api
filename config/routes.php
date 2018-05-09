@@ -18,19 +18,23 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     );
 
     // API
-    $app->get('/api/users[/{id}]', App\Handler\UserHandler::class, 'api.users');
-    $app->post('/api/users', [
+    $userRoutePathBase = '/api/users';
+    $userRoutePathOptional = $userRoutePathBase . '[/{id}]';
+    $userRoutePathFull = $userRoutePathBase . '/{id}';
+    $app->get($userRoutePathOptional, App\User\UserHandler::class);
+    $app->post($userRoutePathBase, [
         Authentication\AuthenticationMiddleware::class,
         BodyParamsMiddleware::class,
-        App\Handler\UserHandler::class
-    ]);
+        App\User\CreateUserHandler::class
+    ], 'api.users');
     $app->route(
-        '/api/users[/{id}]',
+        $userRoutePathFull,
         [
             Authentication\AuthenticationMiddleware::class,
             BodyParamsMiddleware::class,
-            App\Handler\UserHandler::class
+            App\User\ModifyUserHandler::class
         ],
-        ['PATCH', 'DELETE']
+        ['PATCH', 'DELETE'],
+        'api.user'
     );
 };
