@@ -1,5 +1,5 @@
 <?php
-namespace App\Model;
+namespace App\User;
 
 use DomainException;
 use PDOException;
@@ -17,7 +17,7 @@ class UserModel
     {
         $resultSet = new HydratingResultSet();
         $resultSet->setObjectPrototype(new UserEntity());
-        $this->table  = new TableGateway('users', $adapter, null, $resultSet);
+        $this->table = new TableGateway('users', $adapter, null, $resultSet);
     }
 
     /**

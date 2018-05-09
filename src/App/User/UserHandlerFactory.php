@@ -1,9 +1,7 @@
 <?php
-namespace App\Handler;
+namespace App\User;
 
-use App\InputFilter\UserInputFilter;
-use App\Model\UserModel;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Expressive\Hal\HalResponseFactory;
 use Zend\Expressive\Hal\ResourceGenerator;

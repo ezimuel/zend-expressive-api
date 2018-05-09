@@ -1,5 +1,5 @@
 <?php
-namespace App\Model;
+namespace App\User;
 
 use Zend\Paginator\Paginator;
 

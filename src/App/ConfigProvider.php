@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Model;
 use Zend\Expressive\Authentication;
 use Zend\Expressive\Hal\Metadata\MetadataMap;
 use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
@@ -40,8 +39,8 @@ class ConfigProvider
     {
         return [
             'factories'  => [
-                Handler\UserHandler::class => Handler\UserHandlerFactory::class,
-                Model\UserModel::class => Model\UserModelFactory::class
+                User\UserHandler::class => User\UserHandlerFactory::class,
+                User\UserModel::class => User\UserModelFactory::class
             ],
             'aliases' => [
                 Authentication\AuthenticationInterface::class => Authentication\OAuth2\OAuth2Adapter::class,
@@ -54,13 +53,13 @@ class ConfigProvider
         return [
             [
                 '__class__' => RouteBasedResourceMetadata::class,
-                'resource_class' => Model\UserEntity::class,
+                'resource_class' => User\UserEntity::class,
                 'route' => 'api.users',
                 'extractor' => ObjectPropertyHydrator::class,
             ],
             [
                 '__class__' => RouteBasedCollectionMetadata::class,
-                'collection_class' =>  Model\UserCollection::class,
+                'collection_class' =>  User\UserCollection::class,
                 'collection_relation' => 'users',
                 'route' => 'api.users',
             ]

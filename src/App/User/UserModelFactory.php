@@ -1,7 +1,7 @@
 <?php
-namespace App\Model;
+namespace App\User;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Zend\Db\Adapter\AdapterInterface;
 
 class UserModelFactory

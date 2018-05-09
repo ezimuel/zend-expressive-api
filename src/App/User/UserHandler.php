@@ -1,11 +1,10 @@
 <?php
-namespace App\Handler;
+namespace App\User;
 
+use App\Exception;
+use App\RestDispatchTrait;
 use DomainException;
 use PharIo\Manifest\Email;
-use App\Exception;
-use App\InputFilter\UserInputFilter;
-use App\Model\UserModel;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
