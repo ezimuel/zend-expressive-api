@@ -23,6 +23,10 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // The error handler should be the first (most outer) middleware to catch
     // all Exceptions.
     $app->pipe(ErrorHandler::class);
+
+    // Always use Problem Details format for calls to the API.
+    $app->pipe('/api', ProblemDetailsMiddleware::class);
+
     $app->pipe(ServerUrlMiddleware::class);
 
     // Pipe more middleware here that you want to execute on every request:
@@ -59,8 +63,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
     // Seed the UrlHelper with the routing results:
     $app->pipe(UrlHelperMiddleware::class);
-
-    $app->pipe('/api', ProblemDetailsMiddleware::class);
 
     // Add more middleware here that needs to introspect the routing results; this
     // might include:
