@@ -37,4 +37,11 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
         ['PATCH', 'DELETE'],
         'api.user'
     );
+
+    // API docs
+    $app->get('/api/doc/invalid-parameter', App\Doc\InvalidParameterHandler::class);
+    $app->get('/api/doc/method-not-allowed-error', App\Doc\MethodNotAllowedHandler::class);
+    $app->get('/api/doc/resource-not-found', App\Doc\ResourceNotFoundHandler::class);
+    $app->get('/api/doc/parameter-out-of-range', App\Doc\OutOfBoundsHandler::class);
+    $app->get('/api/doc/runtime-error', App\Doc\RuntimeErrorHandler::class);
 };

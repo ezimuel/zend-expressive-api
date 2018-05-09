@@ -16,7 +16,7 @@ class OutOfBoundsException extends DomainException implements ProblemDetailsExce
         $e = new self($message);
         $e->status = 400;
         $e->detail = $message;
-        $e->type = 'https://example.com/api/doc/out-of-range-parameter';
+        $e->type = '/api/doc/parameter-out-of-range';
         $e->title = 'Parameter out of range';
         return $e;
     }
