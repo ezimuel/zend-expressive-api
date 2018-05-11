@@ -1,5 +1,7 @@
 <?php
-namespace App\InputFilter;
+declare(strict_types=1);
+
+namespace App\User;
 
 use Zend\Filter\StringTrim;
 use Zend\InputFilter\InputFilter;

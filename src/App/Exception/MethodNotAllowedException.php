@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Exception;
 
 use DomainException;
@@ -14,7 +16,7 @@ class MethodNotAllowedException extends DomainException implements ProblemDetail
         $e = new self($message);
         $e->status = 405;
         $e->detail = $message;
-        $e->type = 'https://example.com/api/doc/method-not-allowed-error';
+        $e->type = '/api/doc/method-not-allowed-error';
         $e->title = 'Method is not allowed';
         return $e;
     }

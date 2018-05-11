@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Exception;
 
 use DomainException;
@@ -14,7 +16,7 @@ class InvalidParameterException extends DomainException implements ProblemDetail
         $e = new self($message);
         $e->status = 400;
         $e->detail = $message;
-        $e->type = 'https://example.com/api/doc/invalid-parameter';
+        $e->type = '/api/doc/invalid-parameter';
         $e->title = 'Invalid parameter';
         $e->additional['parameters'] = $additionalData;
         return $e;

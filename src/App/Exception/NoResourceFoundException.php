@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Exception;
 
 use DomainException;
@@ -14,7 +16,7 @@ class NoResourceFoundException extends DomainException implements ProblemDetails
         $e = new self($message);
         $e->status = 404;
         $e->detail = $message;
-        $e->type = 'https://example.com/api/doc/resource-no-found';
+        $e->type = '/api/doc/resource-not-found';
         $e->title = 'Resource not found';
         return $e;
     }

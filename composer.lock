@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "716e4e0bf281cd0ec49e1733274e3adf",
+    "content-hash": "20c520b5fd22a46ae6e05ca22ae6c67c",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -680,12 +680,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "d3268ea60c79284f9a8db7b78eb48cc99cc5d471"
+                "reference": "bc0c7361e137f205dc5775583701743b5c4edcda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/d3268ea60c79284f9a8db7b78eb48cc99cc5d471",
-                "reference": "d3268ea60c79284f9a8db7b78eb48cc99cc5d471",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/bc0c7361e137f205dc5775583701743b5c4edcda",
+                "reference": "bc0c7361e137f205dc5775583701743b5c4edcda",
                 "shasum": ""
             },
             "conflict": {
@@ -716,13 +716,14 @@
                 "doctrine/mongodb-odm-bundle": ">=2,<3.0.1",
                 "doctrine/orm": ">=2,<2.4.8|>=2.5,<2.5.1",
                 "dompdf/dompdf": ">=0.6,<0.6.2",
-                "drupal/core": ">=7,<7.58|>=8,<8.4.6|>=8.5,<8.5.1",
-                "drupal/drupal": ">=7,<7.58|>=8,<8.4.6|>=8.5,<8.5.1",
+                "drupal/core": ">=7,<7.59|>=8,<8.4.8|>=8.5,<8.5.3",
+                "drupal/drupal": ">=7,<7.59|>=8,<8.4.8|>=8.5,<8.5.3",
                 "erusev/parsedown": "<1.7",
                 "ezsystems/ezpublish-legacy": ">=5.3,<5.3.12.3|>=5.4,<5.4.11.3|>=2017.8,<2017.8.1.1|>=2017.12,<2017.12.2.1",
                 "firebase/php-jwt": "<2",
                 "friendsofsymfony/rest-bundle": ">=1.2,<1.2.2",
                 "friendsofsymfony/user-bundle": ">=1.2,<1.3.5",
+                "fuel/core": "<=1.8",
                 "gree/jose": "<=2.2",
                 "gregwar/rst": "<1.0.3",
                 "guzzlehttp/guzzle": ">=6,<6.2.1|>=4.0.0-rc2,<4.2.4|>=5,<5.3.1",
@@ -835,7 +836,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-04-30T07:23:33+00:00"
+            "time": "2018-05-09T13:33:28+00:00"
         },
         {
             "name": "spatie/array-to-xml",
@@ -1294,16 +1295,16 @@
         },
         {
             "name": "zendframework/zend-expressive-authentication",
-            "version": "1.0.0alpha4",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-expressive-authentication.git",
-                "reference": "290e4d67fb9b5728755e3bf6082242578ceb51ad"
+                "reference": "2fea5529d78cddc26921e46e87ea886ccb8cc7d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-expressive-authentication/zipball/290e4d67fb9b5728755e3bf6082242578ceb51ad",
-                "reference": "290e4d67fb9b5728755e3bf6082242578ceb51ad",
+                "url": "https://api.github.com/repos/zendframework/zend-expressive-authentication/zipball/2fea5529d78cddc26921e46e87ea886ccb8cc7d1",
+                "reference": "2fea5529d78cddc26921e46e87ea886ccb8cc7d1",
                 "shasum": ""
             },
             "require": {
@@ -1329,8 +1330,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.2.x-dev",
-                    "dev-release-1.0.0": "1.0.x-dev"
+                    "dev-master": "0.4.x-dev"
                 },
                 "zf": {
                     "config-provider": "Zend\\Expressive\\Authentication\\ConfigProvider"
@@ -1356,20 +1356,20 @@
                 "zend-expressive",
                 "zf"
             ],
-            "time": "2018-02-27T14:48:50+00:00"
+            "time": "2018-03-15T17:19:40+00:00"
         },
         {
             "name": "zendframework/zend-expressive-authentication-oauth2",
-            "version": "1.0.0alpha4",
+            "version": "0.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-expressive-authentication-oauth2.git",
-                "reference": "2a0a7d9a1ea74f4fbb0b9c613c3d4170df90a722"
+                "reference": "10f5fcc9eb502eb4e8b0d072b035e9932b644cf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-expressive-authentication-oauth2/zipball/2a0a7d9a1ea74f4fbb0b9c613c3d4170df90a722",
-                "reference": "2a0a7d9a1ea74f4fbb0b9c613c3d4170df90a722",
+                "url": "https://api.github.com/repos/zendframework/zend-expressive-authentication-oauth2/zipball/10f5fcc9eb502eb4e8b0d072b035e9932b644cf1",
+                "reference": "10f5fcc9eb502eb4e8b0d072b035e9932b644cf1",
                 "shasum": ""
             },
             "require": {
@@ -1378,7 +1378,7 @@
                 "psr/container": "^1.0",
                 "psr/http-message": "^1.0.1",
                 "psr/http-server-middleware": "^1.0",
-                "zendframework/zend-expressive-authentication": "^1.0.0alpha3"
+                "zendframework/zend-expressive-authentication": "^0.4.0"
             },
             "conflict": {
                 "container-interop/container-interop": "<1.2.0"
@@ -1389,11 +1389,13 @@
                 "zendframework/zend-coding-standard": "~1.0.0",
                 "zendframework/zend-diactoros": "^1.4.0"
             },
+            "bin": [
+                "bin/generate-oauth2-keys"
+            ],
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.2.x-dev",
-                    "dev-release-1.0.0": "1.0.x-dev"
+                    "dev-master": "0.4.x-dev"
                 }
             },
             "autoload": {
@@ -1416,7 +1418,7 @@
                 "psr-7",
                 "zf"
             ],
-            "time": "2018-02-28T23:09:51+00:00"
+            "time": "2018-05-09T20:59:43+00:00"
         },
         {
             "name": "zendframework/zend-expressive-fastroute",
@@ -4102,6 +4104,35 @@
             "time": "2017-10-20T15:21:32+00:00"
         },
         {
+            "name": "zendframework/zend-coding-standard",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-coding-standard.git",
+                "reference": "893316d2904e93f1c74c1384b6d7d57778299cb6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-coding-standard/zipball/893316d2904e93f1c74c1384b6d7d57778299cb6",
+                "reference": "893316d2904e93f1c74c1384b6d7d57778299cb6",
+                "shasum": ""
+            },
+            "require": {
+                "squizlabs/php_codesniffer": "^2.7"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Zend Framework coding standard",
+            "keywords": [
+                "Coding Standard",
+                "zf"
+            ],
+            "time": "2016-11-09T21:30:43+00:00"
+        },
+        {
             "name": "zendframework/zend-eventmanager",
             "version": "3.2.1",
             "source": {
@@ -4277,25 +4308,25 @@
         },
         {
             "name": "zfcampus/zf-development-mode",
-            "version": "3.1.0",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zfcampus/zf-development-mode.git",
-                "reference": "ffef6ab8cf84ee1d1a77a2b51ba2240d2707c05d"
+                "reference": "419004a320bab017d28f2bc5e7857dde7e19aecf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zfcampus/zf-development-mode/zipball/ffef6ab8cf84ee1d1a77a2b51ba2240d2707c05d",
-                "reference": "ffef6ab8cf84ee1d1a77a2b51ba2240d2707c05d",
+                "url": "https://api.github.com/repos/zfcampus/zf-development-mode/zipball/419004a320bab017d28f2bc5e7857dde7e19aecf",
+                "reference": "419004a320bab017d28f2bc5e7857dde7e19aecf",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.6 || ^7.0"
             },
             "require-dev": {
-                "mikey179/vfsstream": "^1.6",
-                "phpunit/phpunit": "^5.4",
-                "squizlabs/php_codesniffer": "^2.3.1"
+                "mikey179/vfsstream": "^1.6.5",
+                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.5",
+                "zendframework/zend-coding-standard": "~1.0.0"
             },
             "bin": [
                 "bin/zf-development-mode"
@@ -4303,8 +4334,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.1-dev",
-                    "dev-develop": "3.2-dev"
+                    "dev-master": "3.2.x-dev",
+                    "dev-develop": "3.3.x-dev"
                 }
             },
             "autoload": {
@@ -4317,20 +4348,18 @@
                 "BSD-3-Clause"
             ],
             "description": "Zend Framework development mode script",
-            "homepage": "http://github.com/zfcampus/zf-development-mode",
             "keywords": [
+                "ZendFramework",
                 "framework",
-                "zf2"
+                "zf"
             ],
-            "time": "2017-01-09T23:34:49+00:00"
+            "time": "2018-05-07T15:44:42+00:00"
         }
     ],
     "aliases": [],
-    "minimum-stability": "alpha",
+    "minimum-stability": "stable",
     "stability-flags": {
-        "roave/security-advisories": 20,
-        "zendframework/zend-expressive-authentication": 15,
-        "zendframework/zend-expressive-authentication-oauth2": 15
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
