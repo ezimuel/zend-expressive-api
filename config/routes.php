@@ -21,12 +21,12 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $userRoutePathBase = '/api/users';
     $userRoutePathOptional = $userRoutePathBase . '[/{id}]';
     $userRoutePathFull = $userRoutePathBase . '/{id}';
-    $app->get($userRoutePathOptional, App\User\UserHandler::class);
+    $app->get($userRoutePathOptional, App\User\UserHandler::class, 'api.users');
     $app->post($userRoutePathBase, [
-        Authentication\AuthenticationMiddleware::class,
+//        Authentication\AuthenticationMiddleware::class,
         BodyParamsMiddleware::class,
         App\User\CreateUserHandler::class
-    ], 'api.users');
+    ]);
     $app->route(
         $userRoutePathFull,
         [
