@@ -76,7 +76,7 @@ class UserModel
             );
         }
 
-        return $id;
+        return (int) $id;
     }
 
     /**
