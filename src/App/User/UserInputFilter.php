@@ -35,5 +35,11 @@ class UserInputFilter extends InputFilter
                 ]
             ]
         ]);
+        $this->add([
+            'name' => 'name',
+            'filters' => [
+                ['name' => StringTrim::class],
+            ]
+        ]);
     }
 }
