@@ -12,7 +12,7 @@ use Zend\Expressive\Hal\HalResponseFactory;
 use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Expressive\Helper\UrlHelper;
 
-class UserHandler implements RequestHandlerInterface
+class ModifyUserHandler implements RequestHandlerInterface
 {
     private $model;
     private $inputFilter;
