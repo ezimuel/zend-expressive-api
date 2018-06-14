@@ -27,6 +27,46 @@ you can enable using:
 $ composer development-enable
 ```
 
+## Vagrant
+
+You can execute [Vagrant](https://www.vagrantup.com/) to setup a Linux
+environment to run the `zend-expressive-api` application.
+
+This setup will install the following environment:
+
+- Linux Ubuntu 18.04
+- PHP 7.2.5
+- nginx 1.5.1
+- SQLite 3.22
+
+In order to run Vagrant you need a VM hypervisor like [VirtualBox](https://www.virtualbox.org/)
+that can be execute on Win, Mac and Linux operating systems.
+
+To execute the Vagrant box you can use the command as follows:
+
+```bash
+vagrant up
+```
+
+This will require some times (the first execution). When finished, you can see
+the application running at `localhost:8080`.
+
+The web directory of the nginx server is configured to the `public` folder
+(`/home/ubuntu/zend-expressive-api` in the VM). You have also the logs of the
+web server (access_log, error_log) configured in the `log` local folder.
+
+If you want to connect to the VM you can SSH into it, using the command:
+
+```bash
+vagrant ssh
+```
+
+If you want to close/stop the VM you can use the following command:
+
+```bash
+vagrant destroy
+```
+
 ## REST example
 
 We provide a REST API to a _User_ resource backed by a simple
@@ -48,6 +88,7 @@ as well as the OAuth2 database. You can do so as follows:
 # Creating and populating the sample database
 $ sqlite3 data/users.sqlite < data/schema.sql
 $ sqlite3 data/users.sqlite < data/data.sql
+
 # Creating and populating the OAuth2 database
 $ sqlite3 data/oauth2.sqlite < vendor/zendframework/zend-expressive-authentication/oauth2/data/oauth2.sql
 $ sqlite3 data/oauth2.sqlite < data/oath2_test_users.sql
