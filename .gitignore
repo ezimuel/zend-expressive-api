@@ -5,3 +5,4 @@ coveralls-upload.json
 phpunit.xml
 vendor/
 *.log
+.vagrant

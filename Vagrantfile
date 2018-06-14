@@ -52,7 +52,10 @@ SCRIPT
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = 'bento/ubuntu-18.04'
   config.vm.network "forwarded_port", guest: 8080, host: 8080
-  config.vm.synced_folder '.', '/home/ubuntu/zend-expressive-api'
+  config.vm.synced_folder ".", "/home/ubuntu/zend-expressive-api", id: "vagrant-root",
+     owner: "vagrant",
+     group: "www-data",
+     mount_options: ["dmode=775,fmode=660"]
   config.vm.provision 'shell', inline: $script
 
   config.vm.provider "virtualbox" do |vb|
