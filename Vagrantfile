@@ -9,7 +9,7 @@ echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
 
 # Install dependencies
 apt-get update
-apt-get install -y nginx git curl sqlite3 php7.2 php7.2-cli php7.2-fpm php7.2-sqlite3 php7.2-pdo php7.2-xml
+apt-get install -y nginx git curl sqlite3 php7.2 php7.2-cli php7.2-fpm php7.2-sqlite3 php7.2-pdo php7.2-xml php7.2-zip php7.2-mbstring
 
 # Configure Nginx
 echo "server {
