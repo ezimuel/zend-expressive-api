@@ -91,15 +91,15 @@ $ sqlite3 data/users.sqlite < data/data.sql
 
 # Creating and populating the OAuth2 database
 $ sqlite3 data/oauth2.sqlite < vendor/zendframework/zend-expressive-authentication-oauth2/data/oauth2.sql
-$ sqlite3 data/oauth2.sqlite < data/oath2_test_users.sql
+$ sqlite3 data/oauth2.sqlite < data/oauth2_test_users.sql
 ```
 
 We publish the following URLs:
 
-- GET `/api/user[/{id:\d+}]`
-- POST `/api/user` *
-- PATCH `/api/user/{id:\d+}` *
-- DELETE `/api/user/{id:\d+}` *
+- GET `/api/users[/{id:\d+}]`
+- POST `/api/users` *
+- PATCH `/api/users/{id:\d+}` *
+- DELETE `/api/users/{id:\d+}` *
 
 (* = requires OAuth2 Authentication)
 
