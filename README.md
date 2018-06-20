@@ -221,7 +221,7 @@ Location: /api/users/3
 
 ```
 
-The user `Baz` has been created in the following location `/api/user/3`.
+The user `Baz` has been created in the following location `/api/users/3`.
 
 Passwords are stored internally using the [bcrypt](https://en.wikipedia.org/wiki/Bcrypt)
 algorithm. You can examine them in the database to verify.
