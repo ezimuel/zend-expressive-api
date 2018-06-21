@@ -40,7 +40,7 @@ class UserHandler implements RequestHandlerInterface
     {
         return $this->createResponse(
             $request,
-            $this->model->getUser((int) $id)
+            $this->model->getUser($id)
         );
     }
 
