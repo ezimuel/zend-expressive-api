@@ -9,34 +9,21 @@ use Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware;
 use Zend\Expressive\MiddlewareFactory;
 
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
-    // OAuth2 server route
-    $app->route(
-        '/oauth',
-        Authentication\OAuth2\OAuth2Middleware::class,
-        ['GET', 'POST'],
-        'oauth'
-    );
+    // OAuth2 token route
+    $app->post('/oauth', Authentication\OAuth2\TokenEndpointHandler::class, 'oauth-token');
 
     // API
-    $userRoutePathBase = '/api/users';
-    $userRoutePathOptional = $userRoutePathBase . '[/{id}]';
-    $userRoutePathFull = $userRoutePathBase . '/{id}';
-    $app->get($userRoutePathOptional, App\User\UserHandler::class, 'api.users');
-    $app->post($userRoutePathBase, [
+    $app->get('/api/users[/{id}]', App\User\UserHandler::class, 'api.users');
+    $app->post('/api/users', [
         Authentication\AuthenticationMiddleware::class,
         BodyParamsMiddleware::class,
         App\User\CreateUserHandler::class
     ]);
-    $app->route(
-        $userRoutePathFull,
-        [
-            Authentication\AuthenticationMiddleware::class,
-            BodyParamsMiddleware::class,
-            App\User\ModifyUserHandler::class
-        ],
-        ['PATCH', 'DELETE'],
-        'api.user'
-    );
+    $app->route('/api/users/{id}', [
+        Authentication\AuthenticationMiddleware::class,
+        BodyParamsMiddleware::class,
+        App\User\ModifyUserHandler::class
+    ], ['PATCH', 'DELETE'], 'api.user');
 
     // API docs
     $app->get('/api/doc/invalid-parameter', App\Doc\InvalidParameterHandler::class);
